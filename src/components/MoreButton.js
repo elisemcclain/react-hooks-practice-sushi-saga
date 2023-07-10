@@ -1,7 +1,8 @@
 import React from "react";
+// import SushiContainer from "./SushiContainer";
 
-function MoreButton(props) {
-  return <button onClick={/* Fill me in! */ null}>More sushi!</button>;
+function MoreButton({ handleClickButton }) {
+  return <button onClick={handleClickButton}>More sushi!</button>;
 }
 
 export default MoreButton;
