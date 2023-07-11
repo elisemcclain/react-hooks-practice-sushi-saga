@@ -5,39 +5,35 @@ import Table from "./Table";
 const API = "http://localhost:3001/sushis";
 
 function App() {
-  const [sushis, setSushis] = useState([]);
-  const [money, setMoney] = useState(120);
+  const [sushiState, setSushiState] = useState([]);
+  const [money, setMoney] = useState(230);
 
   useEffect(() => {
     fetch(API)
       .then((res) => res.json())
-      .then((sushis) => {
-        const sushiEaten = sushis.map((sushi) => {
-          return { ...sushi, eaten: false };
-        });
-        setSushis(sushiEaten);
+      .then((data) => {
+        const allSushi = data.map((sushi) => ({ ...sushi, eaten: false }));
+        setSushiState(allSushi);
       });
   }, []);
 
-  function handleEatenSushi(eatenSushi) {
-    if (money >= eatenSushi.price) {
-      const updatedSushis = sushis.map((sushi) => {
-        if (eatenSushi.id === sushi.id) return { ...sushi, eaten: true };
-        return sushi;
-      });
+  const handleEatSushi = (id) => {
+    const updatedSushi = sushiState.map((sushi) => {
+      if (sushi.id === id && sushi.price < money) {
+        sushi.eaten = true;
+        setMoney((prevState) => prevState - sushi.price);
+      }
+      return sushi;
+    });
+    setSushiState(updatedSushi);
+  };
 
-      setSushis(updatedSushis);
-      setMoney((money) => money - eatenSushi.price);
-    } else {
-      alert("no mo' money!");
-    }
-  }
+  const eatenSushi = sushiState.filter((sushi) => sushi.eaten);
 
-  const eatenSushis = sushis.filter((sushi) => sushi.eaten);
   return (
     <div className="app">
-      <SushiContainer sushis={sushis} handleEatenSushi={handleEatenSushi} />
-      <Table plates={eatenSushis} money={money} />
+      <SushiContainer sushis={sushiState} handleEatSushi={handleEatSushi} />
+      <Table plates={eatenSushi} money={money} />
     </div>
   );
 }

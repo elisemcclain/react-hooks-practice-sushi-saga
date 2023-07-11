@@ -2,23 +2,23 @@ import React, { useState } from "react";
 import MoreButton from "./MoreButton";
 import Sushi from "./Sushi";
 
-function SushiContainer({ sushis, handleEatenSushi }) {
-  const [sushiIndex, setSushiIndex] = useState(0);
+function SushiContainer({ sushis, handleEatSushi }) {
+  const [idx, setIdx] = useState(0);
 
-  const sushiList = sushis
-    .slice(sushiIndex, sushiIndex + 4)
+  const handleClick = () => {
+    setIdx((prevState) => prevState + 4);
+  };
+
+  const allSushi = sushis
+    .slice(idx, idx + 4)
     .map((sushi) => (
-      <Sushi key={sushi.id} sushi={sushi} handleEatenSushi={handleEatenSushi} />
+      <Sushi sushi={sushi} key={sushi.id} handleEatSushi={handleEatSushi} />
     ));
-
-  function handleClickButton() {
-    setSushiIndex((sushiIndex) => sushiIndex + 4);
-  }
 
   return (
     <div className="belt">
-      {sushiList}
-      <MoreButton handleClickButton={handleClickButton} />
+      {allSushi}
+      <MoreButton onClick={handleClick} />
     </div>
   );
 }

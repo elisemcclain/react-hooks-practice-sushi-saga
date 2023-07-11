@@ -1,17 +1,14 @@
 import React from "react";
 
-function Sushi({ sushi, handleEatenSushi }) {
-  function handleClick() {
-    if (!sushi.eaten) {
-      handleEatenSushi(sushi);
-    } else {
-      alert("you dumb ho");
-    }
-  }
-
+function Sushi({ sushi, handleEatSushi }) {
   return (
     <div className="sushi">
-      <div className="plate" onClick={handleClick}>
+      <div
+        className="plate"
+        onClick={() => {
+          handleEatSushi(sushi.id);
+        }}
+      >
         {sushi.eaten ? null : (
           <img src={sushi.img_url} alt={sushi.name} width="100%" />
         )}
